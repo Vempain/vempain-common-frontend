@@ -1,0 +1,17 @@
+# Ignore Gradle build output directory
+.idea/
+
+package-lock.json
+node_modules
+build
+dist
+coverage
+
+.env.local
+.env.stage
+.npmrc
+
+src/buildInfo.json
+
+# Yarn state files
+.yarn/install-state.gz

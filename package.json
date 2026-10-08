@@ -1,0 +1,79 @@
+{
+  "name": "@vempain/vempain-common-frontend",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Shared Vempain frontend components: background task progress tracking (provider, tray and task API client)",
+  "author": "Paul-Erik Törrönen",
+  "homepage": "https://vempain.poltsi.fi",
+  "license": "GPL-2.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "packageManager": "yarn@4.18.1",
+  "scripts": {
+    "prebuild": "node generateBuildInfo.js",
+    "build": "tsc -p tsconfig.build.json",
+    "build:stage": "yarn prebuild && tsc -p tsconfig.build.json",
+    "build:production": "yarn prebuild && tsc -p tsconfig.build.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage ."
+  },
+  "dependencies": {
+    "dayjs": "^1.11.23"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@vempain/vempain-auth-frontend": "^2.0.17",
+    "antd": "^6.6.5",
+    "axios": "^1.20.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-i18next": "^17.0.15"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@eslint/js": "^10.0.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vempain/vempain-auth-frontend": "^2.0.17",
+    "antd": "^6.6.5",
+    "axios": "^1.20.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "i18next": "^26.4.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-i18next": "^17.0.16",
+    "react-router-dom": "^7.18.4",
+    "ts-jest": "^29.4.14",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vempain/vempain-common-frontend.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
