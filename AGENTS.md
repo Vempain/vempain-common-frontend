@@ -12,12 +12,12 @@
 
 ## Layout
 
-| Path             | Purpose                                                                                                   |
-|------------------|-----------------------------------------------------------------------------------------------------------|
-| `src/models/`    | `TaskStatusEnum` (`as const` object + helpers), `responses/TaskAcceptedResponse`, `responses/TaskProgressResponse` |
+| Path             | Purpose                                                                                                                   |
+|------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `src/models/`    | `TaskStatusEnum` (`as const` object + helpers), `responses/TaskAcceptedResponse`, `responses/TaskProgressResponse`        |
 | `src/services/`  | `TaskAPI` (`extends AbstractAPI` of `@vempain/vempain-auth-frontend`: `getTasks`, `getTask`, `cancelTask`, `dismissTask`) |
 | `src/tasks/`     | `TaskProgressContext` (provider), `TaskProgressContextValue`, `useTaskProgress`, `TaskProgressTray`, `TaskProgressConfig` |
-| `src/__tests__/` | Jest tests (`*.test.ts(x)`), mirroring the `src/` layout; `src/testUtils/mockAuthFrontend.ts` mocks the auth library       |
+| `src/__tests__/` | Jest tests (`*.test.ts(x)`), mirroring the `src/` layout; `src/testUtils/mockAuthFrontend.ts` mocks the auth library      |
 
 ## Semantics to preserve
 
