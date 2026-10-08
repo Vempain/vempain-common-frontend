@@ -7,12 +7,12 @@ frontend needs; today that is the background task progress tracking used by the 
 
 ## Contents
 
-| Export                                                   | Purpose                                                                                          |
-|----------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `TaskAPI`                                                | Axios client of the `/tasks` progress API hosted by every backend that runs background tasks     |
-| `TaskProgressProvider`, `useTaskProgress()`              | Tracks accepted tasks, polls them and fires `onFinished` callbacks; `trackTask`, `closeTask`, `cancelTask` |
-| `TaskProgressTray`, `TaskProgressCard`                   | Non-blocking stack of task cards in the lower right corner (X closes the card, Cancel stops the task) |
-| `TaskStatusEnum`, `TaskAcceptedResponse`, `TaskProgressResponse` | Models mirroring `vempain-common-api`                                                    |
+| Export                                                           | Purpose                                                                                                    |
+|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `TaskAPI`                                                        | Axios client of the `/tasks` progress API hosted by every backend that runs background tasks               |
+| `TaskProgressProvider`, `useTaskProgress()`                      | Tracks accepted tasks, polls them and fires `onFinished` callbacks; `trackTask`, `closeTask`, `cancelTask` |
+| `TaskProgressTray`, `TaskProgressCard`                           | Non-blocking stack of task cards in the lower right corner (X closes the card, Cancel stops the task)      |
+| `TaskStatusEnum`, `TaskAcceptedResponse`, `TaskProgressResponse` | Models mirroring `vempain-common-api`                                                                      |
 
 ## Usage
 
