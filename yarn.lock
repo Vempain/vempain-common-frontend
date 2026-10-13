@@ -1556,9 +1556,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rc-component/notification@npm:~2.0.8":
-  version: 2.0.9
-  resolution: "@rc-component/notification@npm:2.0.9"
+"@rc-component/notification@npm:~2.1.1":
+  version: 2.1.1
+  resolution: "@rc-component/notification@npm:2.1.1"
   dependencies:
     "@rc-component/motion": "npm:^1.1.4"
     "@rc-component/util": "npm:^1.13.0"
@@ -1566,7 +1566,7 @@ __metadata:
   peerDependencies:
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: 10c0/fd05fef511a1857ddd908c380f9cefd28be28c1b5b5d4c6b045ee085ce8c4bbe14a018b8b5b9c3e61f3b4026a9ecfb2b850e9137a82449cf61135ad5dffaa867
+  checksum: 10c0/0854c4dea246fb456bd666ae2b65fac5e23d551cba7f176dc5b180c6a63c85737c941d391bd178ece0bdea72c5321b127e2588ec9dbe9cdf1850bdb32ec581ee
   languageName: node
   linkType: hard
 
@@ -2471,21 +2471,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vempain/vempain-auth-frontend@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@vempain/vempain-auth-frontend@npm:2.1.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.1.1%2Febb551254a1e8eac2b738f4116e72996dc110e55"
+"@vempain/vempain-auth-frontend@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@vempain/vempain-auth-frontend@npm:2.1.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40vempain%2Fvempain-auth-frontend%2F2.1.2%2F50f484ef993366603aa851e753c11c6abf8d3521"
   dependencies:
     "@ant-design/icons": "npm:^6.3.4"
-    antd: "npm:^6.6.5"
+    antd: "npm:^6.6.6"
     dayjs: "npm:^1.11.23"
-    i18next: "npm:^26.4.2"
+    i18next: "npm:^26.4.4"
     react-i18next: "npm:^17.0.16"
   peerDependencies:
     axios: 1.20.0
     react: ^19.2.5
     react-dom: ^19.2.5
     react-router-dom: ^7.14.1
-  checksum: 10c0/aec615dac71cb5aab812c8a825f37366e4fca7058d959eb6fdf402f4b412e4d22f5769c225fb21b38fd446e329ec9e4f666d2f65ee9c00462c427f3ddd672344
+  checksum: 10c0/ad2cb87b3634aef9c74eb78d16828ed5782924c4c00de6dc20a58dd3525fa312c209445102bdc56ffbcf0a113e5790cafa3e1e4181e2388fd7d6f82e01453593
   languageName: node
   linkType: hard
 
@@ -2501,14 +2501,14 @@ __metadata:
     "@types/jest": "npm:^30.0.0"
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19.3.0"
-    "@vempain/vempain-auth-frontend": "npm:^2.1.1"
-    antd: "npm:^6.6.5"
+    "@vempain/vempain-auth-frontend": "npm:^2.1.2"
+    antd: "npm:^6.6.6"
     axios: "npm:^1.20.0"
     dayjs: "npm:^1.11.23"
     eslint: "npm:^10.12.0"
     eslint-plugin-react-hooks: "npm:^7.1.1"
     eslint-plugin-react-refresh: "npm:^0.5.7"
-    i18next: "npm:^26.4.3"
+    i18next: "npm:^26.4.4"
     jest: "npm:^30.5.2"
     jest-environment-jsdom: "npm:^30.5.2"
     react: "npm:^19.3.0"
@@ -2628,9 +2628,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^6.6.5":
-  version: 6.6.5
-  resolution: "antd@npm:6.6.5"
+"antd@npm:^6.6.6":
+  version: 6.6.6
+  resolution: "antd@npm:6.6.6"
   dependencies:
     "@ant-design/colors": "npm:^8.0.1"
     "@ant-design/cssinjs": "npm:^2.1.2"
@@ -2655,7 +2655,7 @@ __metadata:
     "@rc-component/menu": "npm:~1.5.0"
     "@rc-component/motion": "npm:^1.3.3"
     "@rc-component/mutate-observer": "npm:^2.0.1"
-    "@rc-component/notification": "npm:~2.0.8"
+    "@rc-component/notification": "npm:~2.1.1"
     "@rc-component/pagination": "npm:~1.4.0"
     "@rc-component/picker": "npm:~1.12.2"
     "@rc-component/progress": "npm:~1.0.3"
@@ -2683,7 +2683,7 @@ __metadata:
   peerDependencies:
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: 10c0/106197e4c9c1581cf90655060296b4f6eb7429f841ce3c1461894a0920459b51ac9a616efa370bd5788147d635eb52716e8367b6fc51c97ff843d6850e31df3d
+  checksum: 10c0/cfc360bd12a727bf7af27db1afb2419d21cab71915f652cb239f27531cf9702770d70eec078ae5ca6a657ea435908e7ba10052b218a0476a5c94846f3fe9e898
   languageName: node
   linkType: hard
 
@@ -3930,15 +3930,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^26.4.2, i18next@npm:^26.4.3":
-  version: 26.4.3
-  resolution: "i18next@npm:26.4.3"
+"i18next@npm:^26.4.4":
+  version: 26.4.4
+  resolution: "i18next@npm:26.4.4"
   peerDependencies:
     typescript: ^5 || ^6 || ^7
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/099480c24c18039d78c9cadb04cdcb24a2aca579a21678bfdde89a2007c7109cc41afc34d74ede73aed6fa51fa3ee44752dc042b9e10e144fe13d367a777ed40
+  checksum: 10c0/7d94bb6cea2bdbf293547565d565b12fb0f2a24f462f06f6cc1cd08367f14cc36bd488c7abb01d2b9b827bd46e7d4b0713b44543f7ed0c43f32d1371f85dd305
   languageName: node
   linkType: hard
 
@@ -6099,8 +6099,8 @@ __metadata:
   linkType: hard
 
 "zod@npm:^3.25.0 || ^4.0.0":
-  version: 4.6.5
-  resolution: "zod@npm:4.6.5"
-  checksum: 10c0/32eb6c5e98becbe045675b2141c3611451c16ba567f9779231d79af41c4d651ca1c22f154aef7e6c6e77b929f23e43f1154ca05b82e119e922353725d6776af5
+  version: 4.6.6
+  resolution: "zod@npm:4.6.6"
+  checksum: 10c0/447a3113bb743c54ab839213ff95e9e8c197cc1206f65270c18aac35aa70c47a5c8cab753be911b574df9a8a9801ea74ed6be776575232cae0084e51dab3e970
   languageName: node
   linkType: hard
