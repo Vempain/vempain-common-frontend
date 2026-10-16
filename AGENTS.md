@@ -9,6 +9,10 @@
   (`models`, `services`, `tasks`); changing an export is a breaking change for the consuming SPAs, bump the version and update them in the
   same change set.
 - The library must stay free of service-specific logic: task types are plain strings here, result payloads are generic (`TaskProgressResponse<R>`).
+- No ACL functionality belongs here. `AclRowsEditor` (and its `AclVO` adapter `AclEditor`) live in `@vempain/vempain-auth-frontend`, which is
+  the home of every shared ACL component, model and helper of the Vempain frontends; this library depends on that one (`TaskAPI extends AbstractAPI`), so the
+  dependency only goes that way. Add future shared ACL functionality to the auth library and
+  consume it from there; never add or duplicate it here.
 
 ## Layout
 
