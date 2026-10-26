@@ -14,6 +14,8 @@ export interface TaskProgressResponse<R = unknown> {
     completed_steps: number;
     failed_steps: number;
     percent: number;
+    /** Seconds until the task is expected to finish, extrapolated from the pace of the completed steps; null while queued, before the first completed step, while cancelling and once finished */
+    estimated_remaining_seconds: number | null;
     cancel_requested: boolean;
     reverted_steps: number;
     message: string | null;

@@ -5,3 +5,5 @@ export {TASK_POLL_INTERVAL_MS, CLOSED_TASKS_STORAGE_KEY} from "./TaskProgressCon
 export type {TaskProgressContextValue, TrackTaskOptions, TaskFinishedCallback} from "./TaskProgressContextValue";
 export {TaskProgressTray, TaskProgressCard, TASK_PROGRESS_TRANSLATION_DEFAULTS} from "./TaskProgressTray";
 export type {TaskProgressCardProps} from "./TaskProgressTray";
+export {remainingTimeText} from "./taskTimeEstimate";
+export type {RemainingTimeText} from "./taskTimeEstimate";

@@ -55,6 +55,7 @@ function snapshot(overrides: Partial<TaskProgressResponse>): TaskProgressRespons
         completed_steps: 1,
         failed_steps: 0,
         percent: 50,
+        estimated_remaining_seconds: null,
         cancel_requested: false,
         reverted_steps: 0,
         message: "Scanned 2024",
@@ -132,7 +133,8 @@ describe("TaskProgressProvider and TaskProgressTray", () => {
             jest.advanceTimersByTime(TASK_POLL_INTERVAL_MS);
             await Promise.resolve();
         });
-        expect(getTask).toHaveBeenCalledWith("task-1");
+        // The poll is a background read: it must not keep an idle session alive
+        expect(getTask).toHaveBeenCalledWith("task-1", {background: true});
         await waitFor(() => expect(screen.getByTestId("task-card-task-1").getAttribute("data-status")).toBe(TaskStatusEnum.RUNNING));
         expect(onFinished).not.toHaveBeenCalled();
 
@@ -223,6 +225,38 @@ describe("TaskProgressProvider and TaskProgressTray", () => {
         expect(screen.getByText("Cancelled, reverted 1 change")).toBeTruthy();
         expect(screen.queryByText("TaskProgress.cancel")).toBeNull();
         expect(screen.getByLabelText("TaskProgress.close")).toBeTruthy();
+    });
+
+    it("shows the remaining time estimate of a running task and drops it once the task has finished", async () => {
+        getTask.mockResolvedValueOnce(snapshot({estimated_remaining_seconds: 95}));
+        getTask.mockResolvedValueOnce(snapshot({status: TaskStatusEnum.COMPLETED, completed_steps: 2, percent: 100, estimated_remaining_seconds: null}));
+        dismissTask.mockResolvedValue(undefined);
+
+        render(
+                <Provider>
+                    <Starter onFinished={jest.fn()}/>
+                    <TaskProgressTray/>
+                </Provider>
+        );
+        await act(async () => {
+            await Promise.resolve();
+        });
+        fireEvent.click(screen.getByText("start"));
+        // The accepted task carries no estimate yet
+        expect(screen.queryByText(/TaskProgress\.remaining/)).toBeNull();
+
+        await act(async () => {
+            jest.advanceTimersByTime(TASK_POLL_INTERVAL_MS);
+            await Promise.resolve();
+        });
+        await waitFor(() => expect(screen.getByText('TaskProgress.remainingMinutes {"minutes":2}', {exact: false})).toBeTruthy());
+
+        await act(async () => {
+            jest.advanceTimersByTime(TASK_POLL_INTERVAL_MS);
+            await Promise.resolve();
+        });
+        await waitFor(() => expect(screen.getByTestId("task-card-task-1").getAttribute("data-status")).toBe(TaskStatusEnum.COMPLETED));
+        expect(screen.queryByText(/TaskProgress\.remaining/)).toBeNull();
     });
 
     it("shows the error of a failed task", async () => {

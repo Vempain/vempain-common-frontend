@@ -1,5 +1,20 @@
-import {AbstractAPI} from "@vempain/vempain-auth-frontend";
+import {AbstractAPI, BACKGROUND_REQUEST_HEADER} from "@vempain/vempain-auth-frontend";
 import type {TaskProgressResponse} from "../models";
+
+/**
+ * Options of the task reads.
+ */
+export interface TaskReadOptions {
+    /**
+     * The read is a poll or an automatic refresh, not something the user did: it carries the background header, so the backend serves
+     * it without renewing the session and an open tray does not keep an idle session alive.
+     */
+    background?: boolean;
+}
+
+function readConfig(options?: TaskReadOptions): { headers: Record<string, string> } | undefined {
+    return options?.background ? {headers: {[BACKGROUND_REQUEST_HEADER]: "true"}} : undefined;
+}
 
 /**
  * Progress callback API of background tasks (the /tasks endpoints of vempain-common-core, hosted by every backend that runs
@@ -8,17 +23,24 @@ import type {TaskProgressResponse} from "../models";
  */
 export class TaskAPI extends AbstractAPI<unknown, TaskProgressResponse> {
     /** Running and recently finished tasks of the current user, newest first. */
-    public async getTasks(): Promise<TaskProgressResponse[]> {
+    public async getTasks(options?: TaskReadOptions): Promise<TaskProgressResponse[]> {
         this.setAuthorizationHeader();
         this.axiosInstance.defaults.headers.get['Content-Type'] = 'application/json;charset=utf-8';
-        const response = await this.axiosInstance.get<TaskProgressResponse[]>("");
+        const config = readConfig(options);
+        const response = config
+            ? await this.axiosInstance.get<TaskProgressResponse[]>("", config)
+            : await this.axiosInstance.get<TaskProgressResponse[]>("");
         return response.data;
     }
 
-    public async getTask<R = unknown>(taskId: string): Promise<TaskProgressResponse<R>> {
+    public async getTask<R = unknown>(taskId: string, options?: TaskReadOptions): Promise<TaskProgressResponse<R>> {
         this.setAuthorizationHeader();
         this.axiosInstance.defaults.headers.get['Content-Type'] = 'application/json;charset=utf-8';
-        const response = await this.axiosInstance.get<TaskProgressResponse<R>>("/" + encodeURIComponent(taskId));
+        const url = "/" + encodeURIComponent(taskId);
+        const config = readConfig(options);
+        const response = config
+            ? await this.axiosInstance.get<TaskProgressResponse<R>>(url, config)
+            : await this.axiosInstance.get<TaskProgressResponse<R>>(url);
         return response.data;
     }
 

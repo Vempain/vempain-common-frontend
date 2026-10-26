@@ -15,6 +15,7 @@ function fromAccepted(accepted: TaskAcceptedResponse): TaskProgressResponse {
         completed_steps: 0,
         failed_steps: 0,
         percent: 0,
+        estimated_remaining_seconds: null,
         cancel_requested: false,
         reverted_steps: 0,
         message: null,
@@ -121,7 +122,8 @@ export function TaskProgressProvider({taskAPI, children}: TaskProgressProviderPr
             return;
         }
         let cancelled = false;
-        taskAPI.getTasks()
+        // An automatic restore, not a user action: it does not renew the session
+        taskAPI.getTasks({background: true})
                 .then(restored => {
                     if (cancelled) {
                         return;
@@ -152,7 +154,8 @@ export function TaskProgressProvider({taskAPI, children}: TaskProgressProviderPr
         let cancelled = false;
         const timer = window.setInterval(() => {
             activeIds.forEach(taskId => {
-                taskAPI.getTask(taskId)
+                // Polls are background reads: an open tray must not keep an idle session alive
+                taskAPI.getTask(taskId, {background: true})
                         .then(task => {
                             if (!cancelled) {
                                 settle(task);
