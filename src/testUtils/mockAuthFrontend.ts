@@ -58,6 +58,8 @@ export function resetServiceMockState(): void {
 }
 
 jest.mock("@vempain/vempain-auth-frontend", () => {
+    const BACKGROUND_REQUEST_HEADER = "X-Vempain-Background";
+
     abstract class MockAbstractAPI<REQUEST, RESPONSE> {
         protected axiosInstance: MockAxiosInstance;
 
@@ -148,6 +150,7 @@ jest.mock("@vempain/vempain-auth-frontend", () => {
 
     return {
         AbstractAPI: MockAbstractAPI,
+        BACKGROUND_REQUEST_HEADER,
         usePagedTable,
         VempainTable: () => null
     };

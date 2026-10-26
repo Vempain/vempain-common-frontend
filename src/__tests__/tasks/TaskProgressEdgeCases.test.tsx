@@ -56,6 +56,7 @@ function task(overrides: Partial<TaskProgressResponse>): TaskProgressResponse {
         completed_steps: 1,
         failed_steps: 0,
         percent: 50,
+        estimated_remaining_seconds: null,
         cancel_requested: false,
         reverted_steps: 0,
         message: null,

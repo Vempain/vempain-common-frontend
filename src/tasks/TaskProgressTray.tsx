@@ -4,6 +4,7 @@ import type {CSSProperties} from "react";
 import {useTranslation} from "react-i18next";
 import {isTaskCancellable, isTaskFinished, type TaskProgressResponse, TaskStatusEnum} from "../models";
 import {useTaskProgress} from "./useTaskProgress";
+import {remainingTimeText} from "./taskTimeEstimate";
 
 const {Text} = Typography;
 
@@ -37,6 +38,10 @@ export const TASK_PROGRESS_TRANSLATION_DEFAULTS = {
     "TaskProgress.steps": "{{completed}} / {{total}} steps",
     "TaskProgress.failedSteps": "{{count}} failed",
     "TaskProgress.revertedSteps": "{{count}} reverted",
+    "TaskProgress.remainingUnderMinute": "less than a minute left",
+    "TaskProgress.remainingMinutes": "about {{minutes}} min left",
+    "TaskProgress.remainingWholeHours": "about {{hours}} h left",
+    "TaskProgress.remainingHours": "about {{hours}} h {{minutes}} min left",
     "TaskProgress.close": "Close",
     "TaskProgress.cancel": "Cancel",
     "TaskProgress.cancelError": "Failed to cancel the task",
@@ -95,6 +100,7 @@ export function TaskProgressCard({task, onClose, onCancel}: TaskProgressCardProp
     const failed = task.status === TaskStatusEnum.FAILED;
     const cancelled = task.status === TaskStatusEnum.CANCELLED;
     const cancellable = isTaskCancellable(task.status) && !task.cancel_requested;
+    const remaining = finished ? null : remainingTimeText(task.estimated_remaining_seconds);
 
     return (
             <Card
@@ -126,6 +132,7 @@ export function TaskProgressCard({task, onClose, onCancel}: TaskProgressCardProp
                         {task.total_steps > 0 && ` · ${t("TaskProgress.steps", {completed: task.completed_steps, total: task.total_steps})}`}
                         {task.failed_steps > 0 && ` · ${t("TaskProgress.failedSteps", {count: task.failed_steps})}`}
                         {task.reverted_steps > 0 && ` · ${t("TaskProgress.revertedSteps", {count: task.reverted_steps})}`}
+                        {remaining && ` · ${t(remaining.key, remaining.options)}`}
                     </Text>
                     {(failed ? task.error_message : task.message) && (
                             <Text type={failed ? "danger" : undefined} ellipsis={{tooltip: failed ? task.error_message : task.message}} style={{fontSize: 12}}>

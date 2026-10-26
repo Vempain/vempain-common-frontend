@@ -26,12 +26,19 @@
 ## Semantics to preserve
 
 - A host creates one `TaskAPI` per backend (`new TaskAPI(apiUrl, "/tasks")`) and passes it to `<TaskProgressProvider taskAPI={...}>`; the
-  provider polls unfinished tasks every `TASK_POLL_INTERVAL_MS`, restores the user's task list after a reload (`GET /tasks`) and drops it on
+  provider polls unfinished tasks every `TASK_POLL_INTERVAL_MS` and restores the user's task list after a reload (`GET /tasks`); both are
+  background reads (`getTask(id, {background: true})`, `getTasks({background: true})`: the `X-Vempain-Background` header of
+  `@vempain/vempain-auth-frontend`), which the backends serve without renewing the sliding session, so an open tray never keeps an idle
+  session alive. The provider drops the list on
   logout (`useSession()` of the auth library).
 - Closing a card (`closeTask`) only hides it: closed ids are kept in session storage, a running task keeps running and is still polled so its
   `onFinished` callback fires; a finished task is also dismissed from the backend list. Cancelling (`cancelTask`, `POST /tasks/{id}/cancel`)
   stops the task and reverts its changes; the card shows CANCELLING and then CANCELLED with the number of reverted changes.
 - JSON is snake_case (`task_id`, `total_steps`, `cancel_requested`, ...), mirroring `vempain-common-api`; never rename fields to camelCase.
+- The backend estimates the remaining time of a running task (`estimated_remaining_seconds`, extrapolated from the pace of the completed steps;
+  null while queued, before the first completed step, while cancelling and once finished). The card turns it into a coarse text with
+  `tasks/taskTimeEstimate.ts` (`remainingTimeText`: under a minute, minutes, hours) using the `TaskProgress.remaining*` keys; the estimate is
+  never computed in the browser.
 - Texts go through `react-i18next` keys `TaskProgress.*` with English defaults in `TASK_PROGRESS_TRANSLATION_DEFAULTS`; hosts translate them
   in their locale files.
 - Peer dependencies (React 19, antd 6, `@ant-design/icons`, axios, `react-i18next`, `@vempain/vempain-auth-frontend`) are provided by the host.

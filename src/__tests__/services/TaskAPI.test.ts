@@ -15,6 +15,7 @@ describe("TaskAPI", () => {
         completed_steps: 2,
         failed_steps: 0,
         percent: 50,
+        estimated_remaining_seconds: null,
         cancel_requested: false,
         reverted_steps: 0,
         message: "Scanned 2024",
@@ -42,6 +43,22 @@ describe("TaskAPI", () => {
         expect(setAuthorizationHeaderSpy).toHaveBeenCalledTimes(1);
         expect(axiosMock.get).toHaveBeenCalledWith("");
         expect(response).toEqual([task]);
+    });
+
+    it("marks background reads with the header so the backend does not renew the session", async () => {
+        axiosMock.get.mockResolvedValueOnce({data: [task]});
+        axiosMock.get.mockResolvedValueOnce({data: task});
+
+        await taskAPI.getTasks({background: true});
+        await taskAPI.getTask("abc", {background: true});
+
+        expect(axiosMock.get).toHaveBeenNthCalledWith(1, "", {headers: {"X-Vempain-Background": "true"}});
+        expect(axiosMock.get).toHaveBeenNthCalledWith(2, "/abc", {headers: {"X-Vempain-Background": "true"}});
+
+        // A read the user triggered carries no such header
+        axiosMock.get.mockResolvedValueOnce({data: task});
+        await taskAPI.getTask("abc", {background: false});
+        expect(axiosMock.get).toHaveBeenNthCalledWith(3, "/abc");
     });
 
     it("getTask GETs one task by its encoded id", async () => {
