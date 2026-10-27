@@ -59,6 +59,9 @@ yarn test
 yarn build
 ```
 
+`yarn lint` is type-aware (`parserOptions.projectService`) and fails on `@typescript-eslint/no-deprecated`: any use of functionality that the type declarations
+mark `@deprecated` (Ant Design props, DOM or library APIs) must be replaced by the documented successor. CI runs it before the build.
+
 Use the checked-in Yarn 4 release (`.yarn/releases`, `yarnPath` in `.yarnrc.yml`); `@vempain/*` packages resolve from GitHub Packages with
 `VEMPAIN_ACTION_TOKEN`. CI uses the reusable `frontend-library.yaml` workflow from `vempain-workflows`, which sets the package version from
 `VERSION` and publishes to GitHub Packages on `main`. Release order after a contract change: `vempain-common` (backend), this library, then the
