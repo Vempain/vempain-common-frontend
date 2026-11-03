@@ -12,6 +12,7 @@ frontend needs; today that is the background task progress tracking used by the 
 | `TaskAPI`                                                        | Axios client of the `/tasks` progress API hosted by every backend that runs background tasks               |
 | `TaskProgressProvider`, `useTaskProgress()`                      | Tracks accepted tasks, polls them and fires `onFinished` callbacks; `trackTask`, `closeTask`, `cancelTask` |
 | `TaskProgressTray`, `TaskProgressCard`                           | Non-blocking stack of task cards in the lower right corner (X closes the card, Cancel stops the task)      |
+| `SplitActionButton`                                              | Split button: the arrow part picks one of several actions, the main part shows it and runs it when clicked |
 | `TaskStatusEnum`, `TaskAcceptedResponse`, `TaskProgressResponse` | Models mirroring `vempain-common-api`                                                                      |
 
 ## Usage
@@ -45,3 +46,11 @@ yarn build
 ```
 
 Publishing to GitHub Packages is done by CI from `main`; the version is derived from `VERSION` and the existing Git tags.
+
+## Map of GPS-tagged resources
+
+`MapView` renders the clustered map a backend answers through the `MapAPI` of `vempain-common-api` (`POST /map/clusters`, `POST /map/files`):
+the backend groups the resources of the visible viewport by their coordinates rounded to the precision of the zoom level, the view draws
+one marker per cluster with its count, lists the files of small clusters on mouseover, zooms in on larger ones and opens the host's details
+and thumbnail of a clicked resource. The host passes its `MapAPI` instance (`new MapAPI(apiUrl, "/map")`), the file types it keeps, the tile
+server and, optionally, a tag search; it also imports `leaflet/dist/leaflet.css`. `leaflet` and `react-leaflet` are peer dependencies.
