@@ -4,7 +4,8 @@
 
 - `@vempain/vempain-common-frontend` is a **React/TypeScript library** (ESM, published to GitHub Packages), not an app. It holds the frontend
   half of the shared background task facility whose backend half is `vempain-common-core` (`fi.poltsi.vempain.common.task`): the task API
-  client, the task models, the `TaskProgressProvider`/`useTaskProgress()` state and the `TaskProgressTray`.
+  client, the task models, the `TaskProgressProvider`/`useTaskProgress()` state and the `TaskProgressTray`; and the generic UI building
+  blocks the Vempain SPAs share (`src/buttons/`).
 - Consumers: `vempain-admin-frontend` and `vempain-file-frontend`. The published API surface is everything re-exported from `src/index.ts`
   (`models`, `services`, `tasks`); changing an export is a breaking change for the consuming SPAs, bump the version and update them in the
   same change set.
@@ -16,12 +17,14 @@
 
 ## Layout
 
-| Path             | Purpose                                                                                                                   |
-|------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `src/models/`    | `TaskStatusEnum` (`as const` object + helpers), `responses/TaskAcceptedResponse`, `responses/TaskProgressResponse`        |
-| `src/services/`  | `TaskAPI` (`extends AbstractAPI` of `@vempain/vempain-auth-frontend`: `getTasks`, `getTask`, `cancelTask`, `dismissTask`) |
-| `src/tasks/`     | `TaskProgressContext` (provider), `TaskProgressContextValue`, `useTaskProgress`, `TaskProgressTray`, `TaskProgressConfig` |
-| `src/__tests__/` | Jest tests (`*.test.ts(x)`), mirroring the `src/` layout; `src/testUtils/mockAuthFrontend.ts` mocks the auth library      |
+| Path             | Purpose                                                                                                                                                              |
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `src/models/`    | `TaskStatusEnum` (`as const` object + helpers), `responses/TaskAcceptedResponse`, `responses/TaskProgressResponse`                                                   |
+| `src/services/`  | `TaskAPI` (`extends AbstractAPI` of `@vempain/vempain-auth-frontend`: `getTasks`, `getTask`, `cancelTask`, `dismissTask`)                                            |
+| `src/tasks/`     | `TaskProgressContext` (provider), `TaskProgressContextValue`, `useTaskProgress`, `TaskProgressTray`, `TaskProgressConfig`                                            |
+| `src/buttons/`   | `SplitActionButton` (`SplitAction`, `SplitActionButtonProps`, `SPLIT_ACTION_MENU_LABEL`)                                                                             |
+| `src/map/`       | The clustered map of GPS-tagged resources: `MapView`, `MapFilters`, `MapAPI` (+ `MapViewSource`), the `models/` of `MapAPI` of `vempain-common-api`, `MapViewConfig` |
+| `src/__tests__/` | Jest tests (`*.test.ts(x)`), mirroring the `src/` layout; `src/testUtils/mockAuthFrontend.ts` mocks the auth library                                                 |
 
 ## Semantics to preserve
 
@@ -39,9 +42,28 @@
   null while queued, before the first completed step, while cancelling and once finished). The card turns it into a coarse text with
   `tasks/taskTimeEstimate.ts` (`remainingTimeText`: under a minute, minutes, hours) using the `TaskProgress.remaining*` keys; the estimate is
   never computed in the browser.
+- `SplitActionButton` is a split button whose arrow part opens a menu of `actions` (`key`, `label`, optional `onClick`, `disabled`):
+  picking one only selects it, the main part shows the selected label and runs the selected action when clicked (Ant Design's
+  `Dropdown.Button` runs a menu item on pick, which is why this exists). Uncontrolled through `defaultActionKey`, controlled through
+  `selectedActionKey` + `onActionSelect`; `htmlType="submit"` lets a surrounding form run its `onFinish` and read the selected key from
+  the host's state; `disabled`/`loading` disable both parts. It carries no labels or logic of its own: the host (first user: the page
+  editor of the admin SPA, "Save page" / "Save and publish") supplies them. Tested in `src/__tests__/buttons/SplitActionButton.test.tsx`.
+- `MapView` is the map of the GPS-tagged resources of a backend, shared by the file SPA (original files) and the admin SPA (published site
+  files), over the `MapAPI` of `vempain-common-api` (`POST /map/clusters`, `POST /map/files`; client `MapAPI`, or any `MapViewSource`). The
+  backend clusters: the view reports the viewport and zoom after every pan or zoom (debounced `MAP_FETCH_DEBOUNCE_MS`), draws one
+  `CircleMarker` per cluster sized by `clusterRadius(count)` with the count as a permanent tooltip (a single resource is a blue dot without
+  one), lists the files of a cluster of at most `MAP_MAX_LISTED_FILES` on mouseover in a popup (fetched once per cell, `limit` =
+  `MAP_MAX_LISTED_FILES`) and shows "too many, zoom in" with a zoom button for larger ones; clicking a cluster zooms in
+  `MAP_CLUSTER_ZOOM_STEP` levels, clicking a listed file (or a single point through its popup) opens a modal with the host's
+  `renderThumbnail(file)` and `renderFileDetails(file)`. The host supplies the `fileTypes` it keeps, the `tileUrl`/`attribution` of its
+  tile server, an optional `searchTags` for the tag filter, and imports `leaflet/dist/leaflet.css` itself. The filters (file type, taken
+  between, tags, file name) are applied by the backend (`toFilterRequest`). `leaflet` and `react-leaflet` are peer dependencies; Jest
+  replaces `react-leaflet` with `src/testUtils/reactLeafletMock.tsx` (`mockMap`, `mapEventHandlers`). Texts: `MapView.*` keys with the
+  defaults of `MAP_VIEW_TRANSLATION_DEFAULTS`. Tested in `src/__tests__/map/`.
 - Texts go through `react-i18next` keys `TaskProgress.*` with English defaults in `TASK_PROGRESS_TRANSLATION_DEFAULTS`; hosts translate them
   in their locale files.
-- Peer dependencies (React 19, antd 6, `@ant-design/icons`, axios, `react-i18next`, `@vempain/vempain-auth-frontend`) are provided by the host.
+- Peer dependencies (React 19, antd 6, `@ant-design/icons`, axios, `react-i18next`, `@vempain/vempain-auth-frontend`, `leaflet`, `react-leaflet`)
+  are provided by the host.
 
 ## Conventions
 
